@@ -26,7 +26,7 @@ function App() {
   // id — идентификатор последнего полученного сообщения при первоначальной загрузке — 0
   const fetchGet = () => {
     console.log(lastId)
-    fetch(url + `?from={${lastId}}`)
+    fetch(url + `?from=${lastId}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Ответ сети был не ok");
@@ -34,12 +34,14 @@ function App() {
         return response.json()
       .then((data: IMessage[]) => {
 
-          setMessages(data);
-          // setMessages([...messages, ...data]);
+          setMessages([...messages, ...data]);
 
           setUpdated(new Date().getTime());
-          setLastId(data.length);
-          scrollHeight();
+          if (data.length) {
+            console.log('data length', data.length)
+            setLastId(data[data.length - 1].id);
+            scrollHeight();
+          }
         })
       });
   }

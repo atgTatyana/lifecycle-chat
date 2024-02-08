@@ -33,14 +33,11 @@ function App() {
         }
         return response.json()
       .then((data: IMessage[]) => {
-
-          setMessages([...messages, ...data]);
-
           setUpdated(new Date().getTime());
+
           if (data.length) {
-            console.log('data length', data.length)
+            setMessages([...messages, ...data]);
             setLastId(data[data.length - 1].id);
-            scrollHeight();
           }
         })
       });
@@ -55,6 +52,8 @@ function App() {
       chatArea.scrollTop = height;
     }
   }
+
+  useEffect(scrollHeight, [messages]);
 
   useEffect(fetchGet, []);
 
